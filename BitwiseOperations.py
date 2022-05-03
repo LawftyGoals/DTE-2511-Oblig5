@@ -91,13 +91,13 @@ class BitwiseOperations:
             elif self.comb_var.get() == "OR":
                 res = format(int(self.first_num_var.get()) | int(self.sec_num_var.get()), "08b")
             elif self.comb_var.get() == "OCOMP":
-                res = format(~int(self.first_num_var.get()), "09b")
+                res = format(~int(self.first_num_var.get()) & 255, "08b")
             elif self.comb_var.get() == "XOR":
                 res = format(int(self.first_num_var.get()) ^ int(self.sec_num_var.get()), "08b")
             elif self.comb_var.get() == "SHIFTLEFT":
-                res = format(int(self.first_num_var.get()) << 1, "08b")
+                res = format(int(self.first_num_var.get()) << 1 & 255, "08b")
             elif self.comb_var.get() == "SHIFTRIGHT":
-                res = format(int(self.first_num_var.get()) >> 1, "08b")
+                res = format(int(self.first_num_var.get()) >> 1 & 255, "08b")
 
             self.cor_answ_lbl_res.config(text=res)
 
