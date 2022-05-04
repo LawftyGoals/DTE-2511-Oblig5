@@ -47,7 +47,7 @@ def tverrsummen(number):
 async def main():
 
     task_list = []
-    max = 10000
+    max = 500000
     tverrsum = 0
     counter = Counter()
 

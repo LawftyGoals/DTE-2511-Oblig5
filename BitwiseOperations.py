@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter.ttk import Combobox
-from turtle import bgcolor
 
 class BitwiseOperations:
     def __init__(self):

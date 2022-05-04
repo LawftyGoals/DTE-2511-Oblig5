@@ -2,7 +2,7 @@
 DEFAULT_INITIAL_CAPACITY = 4
   
 # Define default load factor
-DEFAULT_MAX_LOAD_FACTOR = 0.5 
+DEFAULT_MAX_LOAD_FACTOR = 0.75 
      
 # Define the maximum hash-table size to be 2 ** 30
 MAXIMUM_CAPACITY = 2 ** 30 
@@ -31,30 +31,25 @@ class Map:
       
             self.rehash()
     
-        
-        index_run = 0
-        linearIndex = hash(key) % self.capacity
-        
-        for x in range(0, len(self.table)):
-                        
-            if linearIndex + index_run >= len(self.table):
-                linearIndex = index_run = 0
+        bucketIndex = self.getHash(hash(key))
 
-            if self.table[linearIndex + index_run] == []:
-            # Add an entry (key, value) to hashTable[index]
-                self.table[linearIndex + index_run].append([key, value])
-                break
-            index_run += 1
+        # Add an entry (key, value) to hashTable[index]
+        self.table[bucketIndex].append([key, value])
 
         self.size += 1 # Increase size
  
     # Remove the entry for the specified key 
     def remove(self, key):
-        for entry in self.table:
-            if len(entry) > 0:
-                if entry[0][0] == key:
-                    self.table.remove(entry)
-
+        bucketIndex = self.getHash(hash(key))
+    
+        # Remove the first entry that matches the key from a bucket
+        if len(self.table[bucketIndex]) > 0:
+            bucket = self.table[bucketIndex]
+            for entry in bucket:
+                if entry[0] == key:
+                    bucket.remove(entry)
+                    self.size -= 1 # Decrease size
+                    break # Remove just one entry that matches the key
 
     # Return true if the specified key is in the map
     def containsKey(self, key):
@@ -87,9 +82,9 @@ class Map:
     
     # Return the first value that matches the specified key 
     def get(self, key):
-        linearIndex = hash(key) % self.capacity
-        if len(self.table[linearIndex]) > 0:
-            bucket = self.table[linearIndex]
+        bucketIndex = self.getHash(hash(key))
+        if len(self.table[bucketIndex]) > 0:
+            bucket = self.table[bucketIndex]
             for entry in bucket:
                 if entry[0] == key:
                     return entry[1]
@@ -99,10 +94,13 @@ class Map:
     # Return all values for the specified key in this map
     def getAll(self, key):
         values = []
-        for entry in self.table:
-            if len(entry)>0:
-                if entry[0][0] == key:
-                    values.append(entry[0][1])
+        bucketIndex = self.getHash(hash(key))
+        if len(self.table[bucketIndex]) > 0:
+            bucket = self.table[bucketIndex]
+            print(bucket)
+            for entry in bucket:
+                if entry[0] == key:
+                    values.append(entry[1])
     
         return tuple(values)
   
